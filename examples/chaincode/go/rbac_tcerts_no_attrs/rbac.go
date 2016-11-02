@@ -83,8 +83,8 @@ func (t *RBACChaincode) Init(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	myLogger.Debug("Add admin [% x][%s]", deployer, "admin")
 	ok, err := stub.InsertRow("RBAC", shim.Row{
 		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_Bytes{Bytes: deployer}},
-			&shim.Column{Value: &shim.Column_String_{String_: "admin"}},
+			shim.NewColumnBytes(deployer),
+			shim.NewColumnString_("admin"),
 		},
 	})
 	if !ok && err == nil {
@@ -162,8 +162,8 @@ func (t *RBACChaincode) addRole(stub shim.ChaincodeStubInterface, args []string)
 		// Insert row
 		ok, err = stub.InsertRow("RBAC", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_Bytes{Bytes: id}},
-				&shim.Column{Value: &shim.Column_String_{String_: role}},
+				shim.NewColumnBytes(id),
+				shim.NewColumnString_(role),
 			},
 		})
 		if err != nil {
@@ -177,8 +177,8 @@ func (t *RBACChaincode) addRole(stub shim.ChaincodeStubInterface, args []string)
 		// Update row
 		ok, err = stub.ReplaceRow("RBAC", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_Bytes{Bytes: id}},
-				&shim.Column{Value: &shim.Column_String_{String_: row.Columns[1].GetString_() + " " + role}},
+				shim.NewColumnBytes(id),
+				shim.NewColumnString_(row.Columns[1].GetString_() + " " + role),
 			},
 		})
 		if err != nil {

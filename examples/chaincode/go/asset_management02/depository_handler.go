@@ -24,10 +24,10 @@ import (
 
 // consts associated with chaincode table
 const (
-	tableColumn       = "AssetsOwnership"
-	columnAccountID   = "Account"
+	tableColumn = "AssetsOwnership"
+	columnAccountID = "Account"
 	columnContactInfo = "ContactInfo"
-	columnAmount      = "Amount"
+	columnAmount = "Amount"
 )
 
 //DepositoryHandler provides APIs used to perform operations on CC's KV store
@@ -58,18 +58,19 @@ func (t *depositoryHandler) createTable(stub shim.ChaincodeStubInterface) error 
 // contactInfo: contact information of the owner of the account ID passed in
 // amount: amount to be allocated to this account ID
 func (t *depositoryHandler) assign(stub shim.ChaincodeStubInterface,
-	accountID string,
-	contactInfo string,
-	amount uint64) error {
+accountID string,
+contactInfo string,
+amount uint64) error {
 
 	myLogger.Debugf("insert accountID= %v", accountID)
 
 	//insert a new row for this account ID that includes contact information and balance
 	ok, err := stub.InsertRow(tableColumn, shim.Row{
 		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: accountID}},
-			&shim.Column{Value: &shim.Column_String_{String_: contactInfo}},
-			&shim.Column{Value: &shim.Column_Uint64{Uint64: amount}}},
+			shim.NewColumnString_(accountID),
+			shim.NewColumnString_(contactInfo),
+			shim.NewColumnUint64(amount),
+		},
 	})
 
 	// you can only assign balances to new account IDs
@@ -87,18 +88,19 @@ func (t *depositoryHandler) assign(stub shim.ChaincodeStubInterface,
 // contactInfo: contact information associated with the account owner (chaincode table does not allow me to perform updates on specific columns)
 // amount: new amount to be udpated with
 func (t *depositoryHandler) updateAccountBalance(stub shim.ChaincodeStubInterface,
-	accountID string,
-	contactInfo string,
-	amount uint64) error {
+accountID string,
+contactInfo string,
+amount uint64) error {
 
 	myLogger.Debugf("insert accountID= %v", accountID)
 
 	//replace the old record row associated with the account ID with the new record row
 	ok, err := stub.ReplaceRow(tableColumn, shim.Row{
 		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: accountID}},
-			&shim.Column{Value: &shim.Column_String_{String_: contactInfo}},
-			&shim.Column{Value: &shim.Column_Uint64{Uint64: amount}}},
+			shim.NewColumnString_(accountID),
+			shim.NewColumnString_(contactInfo),
+			shim.NewColumnUint64(amount),
+		},
 	})
 
 	if !ok && err == nil {

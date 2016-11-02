@@ -137,8 +137,9 @@ func (t *AssetManagementChaincode) assign(stub shim.ChaincodeStubInterface, args
 
 	ok, err := stub.InsertRow("AssetsOwnership", shim.Row{
 		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: asset}},
-			&shim.Column{Value: &shim.Column_Bytes{Bytes: account}}},
+			shim.NewColumnString_(asset),
+			shim.NewColumnBytes(account),
+		},
 	})
 
 	if !ok && err == nil {
@@ -207,8 +208,8 @@ func (t *AssetManagementChaincode) transfer(stub shim.ChaincodeStubInterface, ar
 		"AssetsOwnership",
 		shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: asset}},
-				&shim.Column{Value: &shim.Column_Bytes{Bytes: newOwnerAccount}},
+				shim.NewColumnString_(asset),
+				shim.NewColumnBytes(newOwnerAccount),
 			},
 		})
 	if err != nil {
