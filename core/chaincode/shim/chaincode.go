@@ -900,6 +900,43 @@ func insertRowInternal(stub ChaincodeStubInterface, tableName string, row Row, u
 	return true, nil
 }
 
+// ------------- Column constructors ----------------------
+
+// Create a new column with value type string
+func NewColumnString_(value string) *Column {
+	return &Column{Value: &Column_String_{String_: value}}
+}
+
+// Create a new column with value type int32
+func NewColumnInt32(value int32) *Column {
+	return &Column{Value: &Column_Int32{Int32: value}}
+}
+
+// Create a new column with value type int64
+func NewColumnInt64(value int64) *Column {
+	return &Column{Value: &Column_Int64{Int64: value}}
+}
+
+// Create a new column with value type uint32
+func NewColumnUint32(value uint32) *Column {
+	return &Column{Value: &Column_Uint32{Uint32: value}}
+}
+
+// Create a new column with value type uint64
+func NewColumnUint64(value uint64) *Column {
+	return &Column{Value: &Column_Uint64{Uint64: value}}
+}
+
+// Create a new column with value type []byte
+func NewColumnBytes(value []byte) *Column {
+	return &Column{Value: &Column_Bytes{Bytes: value}}
+}
+
+// Create a new column with value type bool
+func NewColumnBool(value bool) *Column {
+	return &Column{Value: &Column_Bool{Bool: value}}
+}
+
 // ------------- ChaincodeEvent API ----------------------
 
 // SetEvent saves the event to be sent when a transaction is made part of a block
